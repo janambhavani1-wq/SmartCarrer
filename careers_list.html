@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Explore Industry Career Tracks – CareerCompass{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 3rem; padding-bottom: 4rem;">
+    <div class="section-header" style="text-align: left; margin-bottom: 2rem;">
+        <span class="section-tag">Career Repository</span>
+        <h1 class="section-title">Explore High-Impact Industry Career Tracks</h1>
+        <p class="section-desc">Comprehensive guide to modern job roles, required technical skills, salary benchmarks, and hiring companies.</p>
+    </div>
+
+    <!-- Category Filter Pills -->
+    <div style="display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 2.5rem;">
+        <a href="{{ url_for('explore_careers') }}" 
+           class="btn btn-sm {% if not current_category %}btn-primary{% else %}btn-secondary{% endif %}">
+            All Categories ({{ careers|length }})
+        </a>
+        {% for cat in categories %}
+            <a href="{{ url_for('explore_careers', category=cat) }}" 
+               class="btn btn-sm {% if current_category == cat %}btn-primary{% else %}btn-secondary{% endif %}">
+                {{ cat }}
+            </a>
+        {% endfor %}
+    </div>
+
+    <!-- Careers Grid -->
+    <div class="careers-grid">
+        {% for career in careers %}
+            <div class="glass-card glass-card-hover career-card">
+                <div class="career-card-top">
+                    <div class="career-icon-box">
+                        <i class="{{ career.icon }}"></i>
+                    </div>
+                    <div class="career-meta">
+                        <div class="career-category">{{ career.category }}</div>
+                        <h3 class="career-title">{{ career.title }}</h3>
+                    </div>
+                </div>
+
+                <p class="career-desc">{{ career.description }}</p>
+
+                <div class="skills-pill-wrap">
+                    {% for skill_name in career.required_skills_parsed.keys() %}
+                        <span class="skill-pill">{{ skill_name }}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="career-details-list">
+                    <div class="career-detail-row">
+                        <span class="career-detail-label">Avg. Salary (India):</span>
+                        <span class="career-detail-val">{{ career.average_salary_inr }}</span>
+                    </div>
+                    <div class="career-detail-row">
+                        <span class="career-detail-label">Salary Range:</span>
+                        <span class="career-detail-val" style="font-size: 0.8rem;">{{ career.salary_range }}</span>
+                    </div>
+                    <div class="career-detail-row">
+                        <span class="career-detail-label">Growth Outlook:</span>
+                        <span class="badge-growth"><i class="fas fa-arrow-trend-up"></i> {{ career.growth_outlook }}</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: auto;">
+                    <a href="{{ url_for('career_detail', career_id=career.id) }}" class="btn btn-sm btn-outline" style="width: 100%;">
+                        <i class="fas fa-eye"></i> View Learning Roadmap & Companies
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
