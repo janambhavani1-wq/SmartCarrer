@@ -1,0 +1,13 @@
+# CareerCompass – Apache Configuration for InfinityFree & XAMPP
+DirectoryIndex index.php index.html
+
+Options -Indexes
+Options +FollowSymLinks
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+</IfModule>
+
+# Security Headers & MIME
+AddDefaultCharset UTF-8
